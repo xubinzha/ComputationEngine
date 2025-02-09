@@ -67,7 +67,7 @@ public static class PerformanceDemoTests
         sequentialEngine.LoadFunctionMappings(computeFunctions);
         sequentialEngine.Execute();
         sw.Stop();
-        Console.WriteLine($"🔴 Single-Threaded Execution Time: {sw.ElapsedMilliseconds} ms, with {nodes} nodes");
+        Console.WriteLine($"🔴 Sequential Execution Time: {sw.ElapsedMilliseconds} ms, with {nodes} nodes");
         
         // **Measure Single-Threaded Execution Time**
         sw.Restart();

@@ -63,7 +63,7 @@ F (String): Final Result: False
 ## 📌 Performance Tests
 Randomly generate a graph with **1000** nodes, each node with maximum **5** dependencies. Compare the **execution time** among **sequential**, **BFS single-thread** and **multi-thread (maxThread = 10)** engine.
 ```aiignore
-🔴 Single-Threaded Execution Time: 15055 ms, with 1000 nodes
+🔴 Sequential Execution Time: 15055 ms, with 1000 nodes
 🔴 Single-Threaded Execution Time: 2523 ms, with 1000 nodes
 🟢 Multi-Threaded Execution Time: 263 ms, with 1000 nodes
 
