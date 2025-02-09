@@ -29,7 +29,7 @@ Maps **graph nodes** to **specific computation functions**.
 
 ---
 
-### **🔹 `FunctionsRegistry.cs` (Function Registry)**
+### **🔹 `FunctionsRegistry.cs` (Function Registry Lookups)**
 Maps **function name** to **specific computation functions**.
 
 - `"FetchFromDatabase"` runs `FetchFromDatabase()`
@@ -40,8 +40,8 @@ Maps **function name** to **specific computation functions**.
 ## 🚀 **Setup & Execution**
 ### **1️⃣ Clone the Repository**
 ```sh
-git clone https://github.com/your-repo/computation-engine.git
-cd computation-engine
+git clone https://github.com/xubinzha/ComputationEngine.git
+cd ComputationEngine
 
 ```
 ### **2️⃣ Build and Run**
@@ -49,3 +49,18 @@ cd computation-engine
 dotnet build
 dotnet run
 ```
+
+## 📌 Sample Output
+```rust
+A (String): DB Result for Customer 123
+B (String): API Response: Dummy Data
+C (String): Computed: DB Result for Customer 123 | API Response: Dummy Data
+D (String): COMPUTED: DB RESULT FOR CUSTOMER 123 | API RESPONSE: DUMMY DATA
+E (Boolean): False
+F (String): Final Result: False
+```
+
+## 🛠 Performance Optimization
+### Uses ThreadPool for multi-threaded execution.
+### Avoids reflection (function lookup via FunctionRegistry.cs).
+### Minimizes memory allocations with ConcurrentDictionary.
