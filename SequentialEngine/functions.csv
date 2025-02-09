@@ -1,0 +1,7 @@
+Node,Function
+A,FetchFromDatabase
+B,FetchFromApi
+C,CombineResults
+D,ToUpperCase
+E,CheckCondition
+F,FinalFormat

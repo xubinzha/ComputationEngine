@@ -2,4 +2,4 @@
 
 using PerformanceTests;
 
-PerformanceDemoTests.PerformanceTest();
+PerformanceDemoTests.PerformanceTest(1000, 5);

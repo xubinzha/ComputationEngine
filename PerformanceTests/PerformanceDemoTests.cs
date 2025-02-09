@@ -8,8 +8,9 @@ public static class PerformanceDemoTests
 {
     public static void PerformanceTest(int nodes = 1000, int maxEdges = 5)
     {
-        var computationEngine = new ComputationEngine.ComputationEngine(10);
+        var sequentialEngine = new SequentialEngine.SequentialEngine();
         var singleThreadEngine = new SingleThreadEngine();
+        var computationEngine = new ComputationEngine.ComputationEngine(10);
         Random random = new();
         
         // Generate Graph
@@ -59,8 +60,16 @@ public static class PerformanceDemoTests
             };
         }
         
-        // **Measure Single-Threaded Execution Time**
+        // **Measure Sequential Execution Time**
         var sw = Stopwatch.StartNew();
+        sw.Restart();
+        sequentialEngine.LoadDependencies(dependencyGraph);
+        sequentialEngine.LoadFunctionMappings(computeFunctions);
+        sequentialEngine.Execute();
+        sw.Stop();
+        Console.WriteLine($"🔴 Single-Threaded Execution Time: {sw.ElapsedMilliseconds} ms, with {nodes} nodes");
+        
+        // **Measure Single-Threaded Execution Time**
         sw.Restart();
         singleThreadEngine.LoadDependencies(dependencyGraph);
         singleThreadEngine.LoadFunctionMappings(computeFunctions);

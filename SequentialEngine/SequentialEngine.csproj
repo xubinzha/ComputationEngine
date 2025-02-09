@@ -8,9 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ComputationEngine\ComputationEngine.csproj" />
-      <ProjectReference Include="..\SequentialEngine\SequentialEngine.csproj" />
-      <ProjectReference Include="..\SingleThreadEngine\SingleThreadEngine.csproj" />
+      <None Update="functions.csv">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="dependencies.csv">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
