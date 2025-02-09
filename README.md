@@ -60,7 +60,9 @@ E (Boolean): False
 F (String): Final Result: False
 ```
 
-## 🛠 Performance Optimization
-### Uses ThreadPool for multi-threaded execution.
-### Avoids reflection (function lookup via FunctionRegistry.cs).
-### Minimizes memory allocations with ConcurrentDictionary.
+## 📌 Performance Tests
+Randomly, generate a graph with **1000** nodes, each node with maximum **5** dependencies to compare the **execution time** between **single-thread** and **multi-thread (maxThread = 10)** engine.
+```aiignore
+🔴 Single-Threaded Execution Time: 2507 ms, with 1000 nodes
+🟢 Multi-Threaded Execution Time: 265 ms, with 1000 nodes
+```

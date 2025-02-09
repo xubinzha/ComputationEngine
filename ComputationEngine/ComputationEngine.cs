@@ -26,14 +26,14 @@ public class ComputationEngine(int maxDegreeOfParallelism = 4)
         }
     }
     
-    public void LoadDependencies(Dictionary<string, string> computationGraph)
+    public void LoadDependencies(List<List<string>> computationGraph)
     {
         _computationGraph.Clear();
 
-        foreach (var pair in computationGraph)
+        foreach (var edge in computationGraph)
         {
-            AddEdge(pair.Key, pair.Value);
-            AddEdge(pair.Key, pair.Key);
+            AddEdge(edge[0], edge[1]);
+            AddEdge(edge[0], edge[0]);
         }
     }
     
