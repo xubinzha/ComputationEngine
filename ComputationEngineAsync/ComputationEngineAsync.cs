@@ -7,8 +7,6 @@ public class ComputationEngineAsync(int maxDegreeOfParallelism = 4)
     private readonly Dictionary<string, List<string>> _computationGraph = new();
     private readonly ConcurrentDictionary<string, int> _inDegree = new();
     private readonly ConcurrentDictionary<string, object> _calculatedValues = new();
-    private readonly ConcurrentQueue<string> _taskQueue = new();
-    private int _runningTasks = 0;
     private readonly SemaphoreSlim _semaphore = new(maxDegreeOfParallelism);
     private readonly Dictionary<string, Func<ConcurrentDictionary<string, object>, Task<object>>> _functionMap = new();
 
@@ -81,32 +79,13 @@ public class ComputationEngineAsync(int maxDegreeOfParallelism = 4)
         }
     }
     
-    public void Execute()
+    public async Task Execute()
     {
-        foreach (var node in _inDegree.Where(kv => kv.Value == 0).Select(kv => kv.Key))
-        {
-            _taskQueue.Enqueue(node);
-        }
+        // Start tasks for all nodes with zero in-degree
+        var tasks = _inDegree.Where(kv => kv.Value == 0).Select(kv => kv.Key).Select(ComputeNodeAsync);
 
-        _runningTasks = _taskQueue.Count;
-        if (_runningTasks == 0)
-        {
-            return;
-        }
-
-        while (!_taskQueue.IsEmpty)
-        {
-            if (_taskQueue.TryDequeue(out var node))
-            {
-                ThreadPool.QueueUserWorkItem(async _ => await ComputeNodeAsync(node));
-            }
-        }
-
-        // Wait until all tasks complete without blocking CPU
-        while (Volatile.Read(ref _runningTasks) > 0)
-        {
-            Thread.Sleep(10);   // Avoid busy-waiting
-        }
+        // Wait for all top-level nodes (and their dependencies) to finish
+        await Task.WhenAll(tasks);
     }
 
     private async Task ComputeNodeAsync(string node)
@@ -120,21 +99,16 @@ public class ComputationEngineAsync(int maxDegreeOfParallelism = 4)
             {
                 _calculatedValues.TryAdd(node, await function(_calculatedValues));
             }
-
-            if (_computationGraph.TryGetValue(node, out var neighbors))
-            {
-                foreach (var neighbor in neighbors.Where(neighbor => _inDegree.AddOrUpdate(neighbor, 0, (_, count) => count - 1) == 0))
-                {
-                    _taskQueue.Enqueue(neighbor);
-                    Interlocked.Increment(ref _runningTasks);
-                    ThreadPool.QueueUserWorkItem(async _ => await ComputeNodeAsync(neighbor));
-                }
-            }
         }
         finally
         {
             _semaphore.Release();
-            Interlocked.Decrement(ref _runningTasks);
+        }
+        
+        if (_computationGraph.TryGetValue(node, out var neighbors))
+        {
+            var childTasks = neighbors.Where(neighbor => _inDegree.AddOrUpdate(neighbor, 0, (_, count) => count - 1) == 0).Select(ComputeNodeAsync);
+            await Task.WhenAll(childTasks);
         }
     }
 
