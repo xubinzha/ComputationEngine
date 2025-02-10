@@ -9,7 +9,7 @@ This **Computation Engine** dynamically loads a **Directed Acyclic Graph (DAG)**
 - **No Reflection Overhead** → Uses pre-registered delegates for performance.
 - **Multi-threaded Execution** → Uses `ThreadPool` with `SemaphoreSlim`.
 - **Separation of Concerns** → Modular design allows independent function development.
-
+- **Async/Await** → Each node's computation can be `Task<object>`, allowing for **I/O-bound operations** (e.g., DB/API calls).
 
 ---
 
@@ -56,6 +56,15 @@ This **Computation Engine** dynamically loads a **Directed Acyclic Graph (DAG)**
 ### **🔹 `dependencies.csv` (Graph Structure)**
 Defines **node dependencies** (`From` → `To`).
 
+```aiignore
+From,To
+A,C
+B,C
+C,D
+D,E
+E,F
+```
+
 - `A → C` (Node A is required before C)
 - `B → C`, `C → D`, etc.
 
@@ -64,6 +73,16 @@ Defines **node dependencies** (`From` → `To`).
 ### **🔹 `functions.csv` (Function Mappings)**
 Maps **graph nodes** to **specific computation functions**.
 
+```aiignore
+Node,Function
+A,FetchFromDatabase
+B,FetchFromApi
+C,CombineResults
+D,ToUpperCase
+E,CheckCondition
+F,FinalFormat
+```
+
 - `A` calculated by `FetchFromDatabase()`
 - `B` calculated by `FetchFromAPI()`, etc.
 
@@ -71,6 +90,15 @@ Maps **graph nodes** to **specific computation functions**.
 
 ### **🔹 `FunctionsRegistry.cs` (Function Registry Lookups)**
 Maps **function name** to **specific computation functions**.
+
+```aiignore
+{ "FetchFromDatabase", Functions.FetchFromDatabase },
+{ "FetchFromApi", Functions.FetchFromApi },
+{ "CombineResults", Functions.CombineResults },
+{ "ToUpperCase", Functions.ToUpperCase },
+{ "CheckCondition", Functions.CheckCondition },
+{ "FinalFormat", Functions.FinalFormat }
+```
 
 - `"FetchFromDatabase"` runs `FetchFromDatabase()`
 - `"FetchFromApi"` runs `FetchFromAPI()`, etc.
