@@ -8,7 +8,6 @@ public class ComputationEngine(int maxDegreeOfParallelism = 4)
     private readonly ConcurrentDictionary<string, int> _inDegree = new();
     private readonly ConcurrentDictionary<string, object> _calculatedValues = new();
     private readonly ConcurrentQueue<string> _taskQueue = new();
-    private readonly ManualResetEventSlim _completionEvent = new();
     private int _runningTasks = 0;
     private readonly SemaphoreSlim _semaphore = new(maxDegreeOfParallelism);
     private readonly Dictionary<string, Func<ConcurrentDictionary<string, object>, object>> _functionMap = new();
@@ -92,7 +91,6 @@ public class ComputationEngine(int maxDegreeOfParallelism = 4)
         _runningTasks = _taskQueue.Count;
         if (_runningTasks == 0)
         {
-            _completionEvent.Set();
             return;
         }
 
@@ -104,8 +102,11 @@ public class ComputationEngine(int maxDegreeOfParallelism = 4)
             }
         }
 
-        // Wait until all computations are done
-        _completionEvent.Wait();
+        // Wait until all tasks complete without blocking CPU
+        while (Volatile.Read(ref _runningTasks) > 0)
+        {
+            Thread.Sleep(10); // Avoids busy-waiting
+        }
     }
 
     private void ComputeNode(string node)
@@ -133,10 +134,7 @@ public class ComputationEngine(int maxDegreeOfParallelism = 4)
         finally
         {
             _semaphore.Release();
-            if (Interlocked.Decrement(ref _runningTasks) == 0)
-            {
-                _completionEvent.Set();
-            }
+            Interlocked.Decrement(ref _runningTasks);
         }
     }
 
