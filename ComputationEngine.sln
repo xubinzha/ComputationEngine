@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTests", "Perform
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequentialEngine", "SequentialEngine\SequentialEngine.csproj", "{75E35608-A36F-4619-A360-1A4D71876FC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputationEngineAsync", "ComputationEngineAsync\ComputationEngineAsync.csproj", "{8031A95A-4616-4BAF-B835-BEBB532402EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{75E35608-A36F-4619-A360-1A4D71876FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75E35608-A36F-4619-A360-1A4D71876FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75E35608-A36F-4619-A360-1A4D71876FC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8031A95A-4616-4BAF-B835-BEBB532402EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8031A95A-4616-4BAF-B835-BEBB532402EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8031A95A-4616-4BAF-B835-BEBB532402EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8031A95A-4616-4BAF-B835-BEBB532402EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

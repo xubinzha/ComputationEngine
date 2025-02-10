@@ -124,4 +124,3 @@ Randomly generate a graph with **1000** nodes, each node with maximum **5** depe
 
 ## 🎯 Next Steps
 - Graph visualization of execution order
-- Support `async` operations
