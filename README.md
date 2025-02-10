@@ -101,7 +101,7 @@ Maps **function name** to **specific computation functions**.
 ```
 
 - `"FetchFromDatabase"` runs `FetchFromDatabase()`
-- `"FetchFromApi"` runs `FetchFromAPI()`, etc.
+- `"FetchFromApi"` runs `FetchFromApi()`, etc.
 
 ---
 
